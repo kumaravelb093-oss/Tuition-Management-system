@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Diamond Tuition</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body style="background-color: #F8FAFC;">
+
+    <!-- Dashboard Layout -->
+    <div style="display: flex; min-height: 100vh;">
+
+        <!-- Sidebar -->
+        <aside
+            style="width: 280px; background: white; border-right: 1px solid var(--border); padding: 2rem; display: flex; flex-direction: column;">
+            <div class="logo" style="margin-bottom: 3rem;">DiamondTuition.</div>
+
+            <nav style="flex: 1;">
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="#"
+                            style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; color: var(--primary); background: #EFF6FF; border-radius: var(--radius); font-weight: 500;">
+                            <ion-icon name="grid-outline"></ion-icon> Dashboard
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="courses.html"
+                            style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                            <ion-icon name="book-outline"></ion-icon> My Courses
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="#"
+                            style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                            <ion-icon name="calendar-outline"></ion-icon> Schedule
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="#"
+                            style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                            <ion-icon name="chatbubbles-outline"></ion-icon> Messages
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div style="border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 40px; height: 40px; background: #DBEAFE; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 700;">
+                        JD</div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem;">John Doe</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Student</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main style="flex: 1; padding: 2rem;">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+                <div>
+                    <h1 style="font-size: 1.5rem;">Welcome back, John! 👋</h1>
+                    <p style="color: var(--text-muted);">Here's what's happening with your courses today.</p>
+                </div>
+                <a href="index.html" class="btn btn-outline" style="font-size: 0.875rem;">Log Out</a>
+            </header>
+
+            <!-- Stats Grid -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem;">
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Active Courses
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">4</div>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upcoming Sessions
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent);">2</div>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Assignments Due
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #DC2626;">1</div>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Current Schedule</h2>
+            <div class="card" style="padding: 0;">
+                <div
+                    style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr 1fr; font-weight: 600; color: var(--text-muted); font-size: 0.875rem;">
+                    <div>Course Name</div>
+                    <div>Date</div>
+                    <div>Status</div>
+                </div>
+
+                <div
+                    style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; font-size: 0.925rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div
+                            style="width: 32px; height: 32px; background: #DBEAFE; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                            <ion-icon name="calculator-outline"></ion-icon></div>
+                        <span>Advanced Algebra</span>
+                    </div>
+                    <div>Today, 4:00 PM</div>
+                    <div><span
+                            style="background: #DCFCE7; color: #16A34A; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600;">Confirmed</span>
+                    </div>
+                </div>
+
+                <div
+                    style="padding: 1rem 1.5rem; display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; font-size: 0.925rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div
+                            style="width: 32px; height: 32px; background: #FEE2E2; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #DC2626;">
+                            <ion-icon name="book-outline"></ion-icon></div>
+                        <span>Creative Writing</span>
+                    </div>
+                    <div>Tommorow, 2:00 PM</div>
+                    <div><span
+                            style="background: #FEF3C7; color: #D97706; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600;">Pending</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+
+</html>

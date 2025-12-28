@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses | Diamond Tuition</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">DiamondTuition.</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="courses.html" class="active" style="color: var(--primary);">Courses</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons" style="display: flex; gap: 1rem;">
+                <a href="register.html" class="btn btn-primary">Sign In</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header" style="background: var(--background); padding: 4rem 0; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Explore Our Courses</h1>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Find the perfect tutor for your
+                needs. From primary school basics to advanced university preparation.</p>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section class="section">
+        <div class="container">
+            <div class="features-grid"> <!-- Reusing grid layout -->
+
+                <!-- Course 1 -->
+                <div class="card">
+                    <div
+                        style="height: 160px; background-color: #DBEAFE; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary);">
+                        <ion-icon name="calculator-outline"></ion-icon>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem; color: var(--accent); font-weight: 600;">Mathematics</span>
+                        <span style="font-size: 0.875rem; color: var(--text-muted);">Grade 10-12</span>
+                    </div>
+                    <h3 class="feature-title">Advanced Algebra & Calculus</h3>
+                    <p class="feature-desc" style="margin-bottom: 1.5rem;">Master complex equations and theories with
+                        our expert math tutors.</p>
+                    <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="card">
+                    <div
+                        style="height: 160px; background-color: #DCFCE7; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #16A34A;">
+                        <ion-icon name="flask-outline"></ion-icon>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem; color: #16A34A; font-weight: 600;">Science</span>
+                        <span style="font-size: 0.875rem; color: var(--text-muted);">Grade 9-11</span>
+                    </div>
+                    <h3 class="feature-title">Physics & Chemistry Basics</h3>
+                    <p class="feature-desc" style="margin-bottom: 1.5rem;">Understand the fundamental laws of nature and
+                        chemical reactions.</p>
+                    <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="card">
+                    <div
+                        style="height: 160px; background-color: #FEE2E2; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #DC2626;">
+                        <ion-icon name="book-outline"></ion-icon>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem; color: #DC2626; font-weight: 600;">English</span>
+                        <span style="font-size: 0.875rem; color: var(--text-muted);">All Grades</span>
+                    </div>
+                    <h3 class="feature-title">Literature & Creative Writing</h3>
+                    <p class="feature-desc" style="margin-bottom: 1.5rem;">Improve your reading comprehension and
+                        writing skills effectively.</p>
+                    <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="card">
+                    <div
+                        style="height: 160px; background-color: #FEF3C7; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #D97706;">
+                        <ion-icon name="code-slash-outline"></ion-icon>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem; color: #D97706; font-weight: 600;">Computer Science</span>
+                        <span style="font-size: 0.875rem; color: var(--text-muted);">Beginner</span>
+                    </div>
+                    <h3 class="feature-title">Intro to Programming</h3>
+                    <p class="feature-desc" style="margin-bottom: 1.5rem;">Start your coding journey with Python and Web
+                        Development basics.</p>
+                    <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright" style="text-align: center; color: #64748B;">
+                &copy; 2024 Diamond Tuition Management System. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
