@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
+
+  --color-primary: #0f172a;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #e2e8f0;
+  --color-secondary-foreground: #1e293b;
+
+  --color-accent: #2563eb;
+  --color-accent-foreground: #ffffff;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #0f172a;
+}
+
+/* CSS Variables for legacy support/runtime dynamic if needed, but @theme usually handles it in v4. 
+   However, for shadcn/ui like usage, we often stick to :root vars and reference them. 
+   Let's keep :root variables mapping to ensure utilities like bg-primary work if configured to use vars.
+   Actually, v4 @theme defines the values.
+   Let's stick to standard v4 import and define :root for compatibility if standard utilities don't pick up @theme directly as classes without setup.
+*/
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+
+  --secondary: #e2e8f0;
+  --secondary-foreground: #1e293b;
+
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0f172a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #f8fafc;
+
+    --primary: #f8fafc;
+    --primary-foreground: #020617;
+
+    --secondary: #1e293b;
+    --secondary-foreground: #f8fafc;
+
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+
+    --card: #0f172a;
+    --card-foreground: #f8fafc;
+
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #cbd5e1;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Utilities */
+.btn-primary {
+  @apply bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-md font-medium hover:opacity-90 transition-opacity active:scale-95 cursor-pointer;
+}
+
+.card-base {
+  @apply bg-[var(--card)] text-[var(--card-foreground)] border border-[var(--border)] shadow-sm rounded-lg p-6;
+}
