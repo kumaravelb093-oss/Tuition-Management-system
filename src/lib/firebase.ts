@@ -3,12 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    apiKey: "AIzaSyBCVODIO60vORD7IGDnQEB2HOyPdzcuwIk",
+    authDomain: "diamond-tuition.firebaseapp.com",
+    projectId: "diamond-tuition",
+    storageBucket: "diamond-tuition.firebasestorage.app",
+    messagingSenderId: "449825991422",
+    appId: "1:449825991422:web:ad183fd7044833831cd3af",
+    measurementId: "G-5HS46KN33Q"
 };
 
 // Initialize Firebase (Client Side)
