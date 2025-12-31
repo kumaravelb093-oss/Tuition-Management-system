@@ -12,6 +12,7 @@ export default function NewExamPage() {
 
     const [name, setName] = useState("");
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+    const [grade, setGrade] = useState("");
     const [maxMarks, setMaxMarks] = useState("100");
     const [subjects, setSubjects] = useState<string[]>(["Mathematics", "Science", "English"]);
     const [newSubject, setNewSubject] = useState("");
@@ -39,6 +40,7 @@ export default function NewExamPage() {
             await marksService.createExam({
                 name,
                 date,
+                grade,
                 maxMarks: Number(maxMarks),
                 subjects
             });
@@ -77,6 +79,16 @@ export default function NewExamPage() {
                                 placeholder="e.g. Mid-Term Examination 2024"
                                 className="w-full px-4 py-2.5 bg-white border border-[#DADCE0] rounded-md focus:outline-none focus:border-[#1A73E8] focus:ring-1 focus:ring-[#1A73E8] text-[#202124]"
                                 value={name} onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-[13px] font-medium text-[#5F6368] mb-2 uppercase tracking-wide">Class / Grade *</label>
+                            <input
+                                type="text" required
+                                placeholder="e.g. 10th Standard"
+                                className="w-full px-4 py-2.5 bg-white border border-[#DADCE0] rounded-md focus:outline-none focus:border-[#1A73E8] focus:ring-1 focus:ring-[#1A73E8] text-[#202124]"
+                                value={grade} onChange={(e) => setGrade(e.target.value)}
                             />
                         </div>
 

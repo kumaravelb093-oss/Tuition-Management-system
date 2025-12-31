@@ -15,6 +15,17 @@ import {
     setDoc
 } from "firebase/firestore";
 
+export interface MarksEntry {
+    id?: string;
+    examId?: string; // Optional to handle page usage
+    studentId: string;
+    studentName: string;
+    subject: string;
+    marksObtained: number;
+    maxMarks: number;
+    createdAt?: any;
+}
+
 export interface Exam {
     id?: string;
     name: string; // e.g. "Unit Test 1", "Quarterly", "Half-Yearly", "Annual"
@@ -23,17 +34,7 @@ export interface Exam {
     subjects: string[];
     maxMarks: number;
     createdAt?: any;
-}
-
-export interface MarksEntry {
-    id?: string;
-    examId: string;
-    studentId: string;
-    studentName: string;
-    subject: string;
-    marksObtained: number;
-    maxMarks: number;
-    createdAt?: any;
+    entries?: MarksEntry[]; // Added to match usage in page
 }
 
 const EXAMS_COLLECTION = "exams";
@@ -50,6 +51,29 @@ export const marksService = {
             return { id: docRef.id, ...exam };
         } catch (error) {
             console.error("Error adding exam:", error);
+            throw error;
+        }
+    },
+
+    // Alias for addExam used in new-exam/page.tsx
+    createExam: async (exam: Omit<Exam, "id">) => {
+        return marksService.addExam(exam);
+    },
+
+    getExam: async (id: string) => {
+        try {
+            const docRef = doc(db, EXAMS_COLLECTION, id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const examData = { id: docSnap.id, ...docSnap.data() } as Exam;
+                // Fetch entries for this exam
+                const entries = await marksService.getMarksByExam(id);
+                return { ...examData, entries };
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Error getting exam:", error);
             throw error;
         }
     },
@@ -91,7 +115,11 @@ export const marksService = {
         try {
             const batch = writeBatch(db);
             entries.forEach(entry => {
-                // Create a deterministic ID based on exam, student, subject
+                // Ensure examId is present or handle gracefully
+                if (!entry.examId) {
+                    // console.warn("Missing examId in saveMarks entry", entry);
+                    return;
+                }
                 const docId = `${entry.examId}_${entry.studentId}_${entry.subject}`;
                 const docRef = doc(db, MARKS_COLLECTION, docId);
                 batch.set(docRef, {
@@ -102,6 +130,20 @@ export const marksService = {
             await batch.commit();
         } catch (error) {
             console.error("Error saving marks:", error);
+            throw error;
+        }
+    },
+
+    updateExamEntries: async (examId: string, entries: MarksEntry[]) => {
+        try {
+            // Inject examId into entries
+            const enrichedEntries = entries.map(e => ({
+                ...e,
+                examId: examId
+            }));
+            await marksService.saveMarks(enrichedEntries);
+        } catch (error) {
+            console.error("Error updating exam entries:", error);
             throw error;
         }
     },
@@ -147,6 +189,20 @@ export const marksService = {
     },
 
     getGrade: (percentage: number) => {
+        if (percentage >= 90) return "A+";
+        if (percentage >= 80) return "A";
+        if (percentage >= 70) return "B+";
+        if (percentage >= 60) return "B";
+        if (percentage >= 50) return "C";
+        if (percentage >= 35) return "D";
+        return "F";
+    },
+
+    // Alias for getGrade
+    calculateGrade: (percentage: number) => {
+        // Since marksService is const, we can't reference it easily without recursion risk if improperly scoped, 
+        // but 'marksService.getGrade' should work if we rely on hoisted exported var or just copy logic.
+        // Copying logic is safest and simplest for "calculateGrade".
         if (percentage >= 90) return "A+";
         if (percentage >= 80) return "A";
         if (percentage >= 70) return "B+";

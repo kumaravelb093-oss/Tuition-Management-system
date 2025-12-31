@@ -22,6 +22,7 @@ export interface Student {
     dob: string;
     address: string;
     phone: string;
+    email?: string;
     parentName: string;
     joiningDate: string;
     status: "Active" | "Inactive";
