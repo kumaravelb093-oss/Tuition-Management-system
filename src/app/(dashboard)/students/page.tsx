@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Search, Filter, MoreHorizontal, User } from "lucide-react";
 import { studentService, Student } from "@/services/studentService";
+import { MoreVertical, Eye, Edit, CreditCard, FileText, Receipt, TrendingUp, CheckCircle, XCircle, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function StudentsPage() {
     const [students, setStudents] = useState<Student[]>([]);
@@ -118,9 +120,7 @@ export default function StudentsPage() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button className="p-2 hover:bg-[#F1F3F4] rounded-full text-[#5F6368] transition-colors">
-                                                <MoreHorizontal size={18} />
-                                            </button>
+                                            <StudentActionMenu student={student} onUpdate={() => loadStudents()} />
                                         </td>
                                     </tr>
                                 ))}
@@ -129,6 +129,81 @@ export default function StudentsPage() {
                     </div>
                 )}
             </div>
+        </div>
+    );
+}
+
+function StudentActionMenu({ student, onUpdate }: { student: Student; onUpdate: () => void }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isOpen && !(event.target as Element).closest(`#menu-${student.id}`)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen, student.id]);
+
+    const handleToggleStatus = async () => {
+        try {
+            const newStatus = student.status === "Active" ? "Inactive" : "Active";
+            if (confirm(`Are you sure you want to set ${student.fullName} to ${newStatus}?`)) {
+                await studentService.updateStudent(student.id!, { status: newStatus });
+                onUpdate();
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Failed to update status");
+        } finally {
+            setIsOpen(false);
+        }
+    };
+
+    const menuItems = [
+        { label: "View Profile", icon: Eye, onClick: () => router.push(`/students/${student.id}`) },
+        { label: "Edit Student", icon: Edit, onClick: () => router.push(`/students/edit/${student.id}`) },
+        { label: "Add Fee Payment", icon: CreditCard, onClick: () => router.push(`/fees/new?studentId=${student.id}`) },
+        { label: "View Fee History", icon: Receipt, onClick: () => router.push(`/fees?search=${student.fullName}`) },
+        { label: "Enter Marks", icon: FileText, onClick: () => router.push(`/marks`) },
+        { divider: true },
+        { label: student.status === "Active" ? "Set Inactive" : "Set Active", icon: student.status === "Active" ? XCircle : CheckCircle, onClick: handleToggleStatus },
+        { label: "Archive Student", icon: Trash2, onClick: handleToggleStatus },
+    ];
+
+    return (
+        <div className="relative" id={`menu-${student.id}`}>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`p-2 rounded-full transition-colors ${isOpen ? 'bg-[#E8F0FE] text-[#1A73E8]' : 'hover:bg-[#F1F3F4] text-[#5F6368]'}`}
+            >
+                <MoreVertical size={18} />
+            </button>
+
+            {isOpen && (
+                <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-[#E8EAED] py-2 z-50 origin-top-right animate-in fade-in zoom-in-95 duration-100">
+                    <div className="px-4 py-2 border-b border-[#E8EAED] mb-1">
+                        <p className="text-xs font-medium text-[#5F6368] uppercase tracking-wider">Actions</p>
+                    </div>
+
+                    {menuItems.map((item, index) => (
+                        item.divider ? (
+                            <div key={index} className="my-1 border-t border-[#E8EAED]"></div>
+                        ) : (
+                            <button
+                                key={index}
+                                onClick={() => { item.onClick && item.onClick(); setIsOpen(false); }}
+                                className={`w-full text-left px-4 py-2.5 text-sm hover:bg-[#F8F9FA] flex items-center gap-3 ${item.label?.includes("Set Active") || item.label?.includes("Set Inactive") ? (student.status === 'Active' ? 'text-[#D93025]' : 'text-[#1E8E3E]') : 'text-[#202124]'}`}
+                            >
+                                {item.icon && <item.icon size={16} className={item.label?.includes("Set") ? "" : "text-[#5F6368]"} />}
+                                {item.label}
+                            </button>
+                        )
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

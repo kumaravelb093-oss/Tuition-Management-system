@@ -1,7 +1,7 @@
 "use client";
 export const dynamic = 'force-dynamic';
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { studentService, Student } from "@/services/studentService";
 import { feeService } from "@/services/feeService";
 import { ArrowLeft, Check, Search, Calendar, User, IndianRupee } from "lucide-react";
@@ -9,6 +9,9 @@ import Link from "next/link";
 
 export default function NewPaymentPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const preSelectedstudentId = searchParams.get("studentId");
+
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -38,6 +41,15 @@ export default function NewPaymentPage() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (preSelectedstudentId && students.length > 0) {
+            const student = students.find(s => s.id === preSelectedstudentId);
+            if (student) {
+                handleSelectStudent(student);
+            }
+        }
+    }, [preSelectedstudentId, students]);
 
     const filteredStudents = students.filter(s =>
         s.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||

@@ -4,15 +4,24 @@ import Link from "next/link";
 import { Plus, Download, Search, FileText } from "lucide-react";
 import { feeService, Payment } from "@/services/feeService";
 import { pdfService } from "@/services/pdfService";
+import { useSearchParams } from "next/navigation";
 
 export default function FeesPage() {
     const [payments, setPayments] = useState<Payment[]>([]);
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState("");
+    const searchParams = useSearchParams();
+    const query = searchParams.get("search");
+    const [searchTerm, setSearchTerm] = useState(query || "");
 
     useEffect(() => {
         loadPayments();
     }, []);
+
+    useEffect(() => {
+        if (query) {
+            setSearchTerm(query);
+        }
+    }, [query]);
 
     const loadPayments = async () => {
         try {
