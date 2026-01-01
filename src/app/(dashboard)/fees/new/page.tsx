@@ -72,6 +72,7 @@ export default function NewPaymentPage() {
         try {
             await feeService.addPayment({
                 studentId: selectedStudent.id!, // Assuming id exists if fetched
+                studentCode: selectedStudent.studentCode,
                 studentName: selectedStudent.fullName,
                 grade: selectedStudent.grade,
                 amount: Number(amount),

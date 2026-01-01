@@ -14,6 +14,7 @@ import {
 export interface Payment {
     id?: string;
     studentId: string;
+    studentCode?: string;
     studentName: string;
     grade: string;
     amount: number;

@@ -68,7 +68,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ stude
                     <div>
                         <h2 className="text-lg font-medium text-[#202124]">{student.fullName}</h2>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm text-[#5F6368]">{student.grade}</span>
+                            <span className="text-sm font-bold text-[#4285F4]">{student.studentCode || "DT-Pending"}</span>
+                            <span className="text-sm text-[#5F6368]">• {student.grade}</span>
                             <span className={`text-xs px-2 py-0.5 rounded-full ${student.status === 'Active' ? 'bg-[#E6F4EA] text-[#1E8E3E]' : 'bg-[#FCE8E6] text-[#D93025]'}`}>
                                 {student.status}
                             </span>

@@ -29,6 +29,7 @@ export default function StudentsPage() {
     const filteredStudents = students.filter(student =>
         student.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.grade.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.studentCode?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.phone?.includes(searchTerm)
     );
 
@@ -52,7 +53,7 @@ export default function StudentsPage() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9AA0A6]" size={18} />
                     <input
                         type="text"
-                        placeholder="Search by name, class, or phone..."
+                        placeholder="Search by Name / ID / Phone..."
                         className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#DADCE0] rounded-lg text-[#202124] placeholder-[#9AA0A6] focus:outline-none focus:border-[#4285F4] focus:ring-1 focus:ring-[#4285F4] shadow-sm transition-shadow"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -100,7 +101,7 @@ export default function StudentsPage() {
                                                 </div>
                                                 <div>
                                                     <p className="text-[14px] font-medium text-[#202124]">{student.fullName}</p>
-                                                    <p className="text-[12px] text-[#5F6368]">ID: {student.id?.slice(0, 6)}</p>
+                                                    <p className="text-[12px] text-[#5F6368]">ID: {student.studentCode || "DT-Pending"}</p>
                                                 </div>
                                             </div>
                                         </td>

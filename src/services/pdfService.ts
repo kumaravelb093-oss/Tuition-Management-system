@@ -43,9 +43,10 @@ export const pdfService = {
 
         doc.setFont("helvetica", "bold");
         doc.text(`Student Name: ${payment.studentName}`, leftX, startY + gap);
+        doc.text(`Student ID: ${payment.studentCode || "N/A"}`, rightX, startY + gap);
         doc.setFont("helvetica", "normal");
 
-        doc.text(`Class/Grade: ${payment.grade}`, rightX, startY + gap);
+        doc.text(`Class/Grade: ${payment.grade}`, leftX, startY + gap * 2);
 
         // 3. Table
         const tableStartY = startY + (gap * 3);
