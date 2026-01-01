@@ -50,7 +50,7 @@ export default function StudentsPage() {
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9AA0A6]" size={18} />
+                    {!searchTerm && <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9AA0A6]" size={18} />}
                     <input
                         type="text"
                         placeholder="Search by Name / ID / Phone..."
