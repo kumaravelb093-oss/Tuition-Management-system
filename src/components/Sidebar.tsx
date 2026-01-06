@@ -8,13 +8,15 @@ import {
   BookOpen,
   BarChart3,
   LogOut,
-  GraduationCap
+  GraduationCap,
+  UsersRound
 } from "lucide-react";
 import { auth } from "@/lib/firebase";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Students", href: "/students", icon: Users },
+  { name: "Staff", href: "/staff", icon: UsersRound },
   { name: "Fees & Billing", href: "/fees", icon: CreditCard },
   { name: "Marks & Exams", href: "/marks", icon: BookOpen },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
