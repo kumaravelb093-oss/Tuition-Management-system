@@ -28,10 +28,15 @@ export default function StaffSalaryPage() {
                 staffService.getStaff(),
                 staffService.getMonthlySalaries(selectedMonth, selectedYear)
             ]);
-            setStaff(staffData.filter(s => s.status === "Active"));
+            // Include all staff (don't filter by status - staff may not have status field)
+            setStaff(staffData);
             setSalaries(salaryData);
+            console.log("Loaded staff:", staffData.length, "Loaded salaries:", salaryData.length);
         } catch (error) {
-            console.error(error);
+            console.error("Error loading data:", error);
+            // Set empty arrays on error to prevent crash
+            setStaff([]);
+            setSalaries([]);
         } finally {
             setLoading(false);
         }
@@ -204,7 +209,7 @@ export default function StaffSalaryPage() {
                                                 <p className="text-[14px] font-medium text-[#202124]">{member.fullName}</p>
                                                 <p className="text-[11px] text-[#9AA0A6]">{member.role}</p>
                                             </td>
-                                            <td className="px-6 py-4 text-right text-[14px] text-[#202124]">₹{member.basicSalary.toLocaleString()}</td>
+                                            <td className="px-6 py-4 text-right text-[14px] text-[#202124]">₹{(member.basicSalary || 0).toLocaleString()}</td>
                                             <td className="px-6 py-4 text-center text-[14px] text-[#5F6368]">
                                                 {salary ? `${salary.presentDays} / ${salary.totalWorkingDays}` : "-"}
                                             </td>

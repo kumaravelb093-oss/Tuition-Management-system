@@ -76,12 +76,19 @@ export const staffService = {
 
     getStaff: async (): Promise<Staff[]> => {
         try {
-            const q = query(collection(db, STAFF_COLLECTION), orderBy("createdAt", "desc"));
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Staff[];
+            // Simple query without orderBy to avoid Firestore index requirements
+            const snapshot = await getDocs(collection(db, STAFF_COLLECTION));
+            const staffList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Staff[];
+            // Sort client-side by createdAt (newest first)
+            return staffList.sort((a, b) => {
+                const dateA = a.createdAt?.toMillis?.() || 0;
+                const dateB = b.createdAt?.toMillis?.() || 0;
+                return dateB - dateA;
+            });
         } catch (error) {
             console.error("Error fetching staff:", error);
-            throw error;
+            // Return empty array instead of throwing to prevent page crash
+            return [];
         }
     },
 
@@ -244,16 +251,16 @@ export const staffService = {
 
     getMonthlySalaries: async (month: string, year: number): Promise<StaffSalary[]> => {
         try {
-            const q = query(
-                collection(db, SALARY_COLLECTION),
-                where("month", "==", month),
-                where("year", "==", year)
-            );
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffSalary[];
+            // Simple query to avoid Firestore index requirements
+            // Fetch all salaries and filter client-side
+            const snapshot = await getDocs(collection(db, SALARY_COLLECTION));
+            const allSalaries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffSalary[];
+            // Filter by month and year client-side
+            return allSalaries.filter(s => s.month === month && s.year === year);
         } catch (error) {
             console.error("Error fetching monthly salaries:", error);
-            throw error;
+            // Return empty array instead of throwing to prevent page crash
+            return [];
         }
     },
 
