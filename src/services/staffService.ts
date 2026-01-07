@@ -166,19 +166,20 @@ export const staffService = {
 
     getMonthlyAttendance: async (staffId: string, month: number, year: number): Promise<StaffAttendance[]> => {
         try {
-            // Filter by staffId and date range (month/year)
+            // Simpler query to avoid Firestore composite index requirements
+            // Fetch all attendance for this staff and filter by date client-side
+            const q = query(
+                collection(db, ATTENDANCE_COLLECTION),
+                where("staffId", "==", staffId)
+            );
+            const snapshot = await getDocs(q);
+            const allAttendance = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffAttendance[];
+
+            // Filter by month/year client-side
             const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
             const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
 
-            const q = query(
-                collection(db, ATTENDANCE_COLLECTION),
-                where("staffId", "==", staffId),
-                where("date", ">=", startDate),
-                where("date", "<=", endDate),
-                orderBy("date", "asc")
-            );
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffAttendance[];
+            return allAttendance.filter(a => a.date >= startDate && a.date <= endDate);
         } catch (error) {
             console.error("Error fetching monthly attendance:", error);
             throw error;
