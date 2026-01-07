@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Wallet, Calculator, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Wallet, Calculator, Check, Loader2, Download } from "lucide-react";
 import { staffService, Staff, StaffSalary } from "@/services/staffService";
+import { pdfService } from "@/services/pdfService";
 
 export default function StaffSalaryPage() {
     const [staff, setStaff] = useState<Staff[]>([]);
@@ -106,6 +107,10 @@ export default function StaffSalaryPage() {
             const salaryRecord = await staffService.generateSalary(salaryData);
 
             setSalaries(prev => [...prev, salaryRecord]);
+
+            // Auto-download PDF
+            pdfService.generateSalarySlip(salaryRecord);
+
             alert(`✅ Salary generated successfully!\n\nStaff: ${staffName} (${staffCode})\nMonth: ${selectedMonth} ${selectedYear}\nNet Salary: ₹${netSalary.toLocaleString()}`);
         } catch (error: any) {
             console.error("Salary generation error:", error);
@@ -244,15 +249,26 @@ export default function StaffSalaryPage() {
                                                     >
                                                         <Calculator size={14} /> Generate
                                                     </button>
-                                                ) : salary.paymentStatus === "Unpaid" ? (
-                                                    <button
-                                                        onClick={() => handleMarkPaid(salary.id!)}
-                                                        className="px-3 py-1.5 text-xs font-medium bg-[#1E8E3E] text-white rounded-md hover:bg-[#166c2e] transition-colors flex items-center gap-1 mx-auto"
-                                                    >
-                                                        <Check size={14} /> Mark Paid
-                                                    </button>
                                                 ) : (
-                                                    <span className="text-[12px] text-[#9AA0A6]">Completed</span>
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        {salary.paymentStatus === "Unpaid" ? (
+                                                            <button
+                                                                onClick={() => handleMarkPaid(salary.id!)}
+                                                                className="px-3 py-1.5 text-xs font-medium bg-[#1E8E3E] text-white rounded-md hover:bg-[#166c2e] transition-colors flex items-center gap-1"
+                                                            >
+                                                                <Check size={14} /> Paid
+                                                            </button>
+                                                        ) : (
+                                                            <span className="text-[12px] text-[#9AA0A6] px-2">Completed</span>
+                                                        )}
+                                                        <button
+                                                            onClick={() => pdfService.generateSalarySlip(salary)}
+                                                            className="p-1.5 text-[#5F6368] hover:text-[#202124] hover:bg-gray-100 rounded-md transition-colors"
+                                                            title="Download Salary Slip"
+                                                        >
+                                                            <Download size={16} />
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </td>
                                         </tr>
