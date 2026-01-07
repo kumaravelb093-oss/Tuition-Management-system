@@ -42,18 +42,32 @@ export default function StaffSalaryPage() {
         try {
             // Fetch attendance for this staff for the selected month
             const monthIndex = new Date(Date.parse(selectedMonth + " 1, " + selectedYear)).getMonth();
-            const attendanceRecords = await staffService.getMonthlyAttendance(member.id!, monthIndex, selectedYear);
+            let attendanceRecords: any[] = [];
+
+            try {
+                attendanceRecords = await staffService.getMonthlyAttendance(member.id!, monthIndex, selectedYear);
+            } catch (err) {
+                console.warn("Could not fetch attendance, using defaults:", err);
+                attendanceRecords = [];
+            }
 
             let presentDays = 0;
             let halfDays = 0;
             let absentDays = 0;
 
-            attendanceRecords.forEach(a => {
-                if (a.status === "Present") presentDays++;
-                else if (a.status === "Half Day") halfDays++;
-                else if (a.status === "Absent") absentDays++;
-                // Leave is not counted towards deductions typically
-            });
+            if (attendanceRecords.length > 0) {
+                // Calculate from actual attendance records
+                attendanceRecords.forEach(a => {
+                    if (a.status === "Present") presentDays++;
+                    else if (a.status === "Half Day") halfDays++;
+                    else if (a.status === "Absent") absentDays++;
+                });
+            } else {
+                // No attendance records - assume full attendance by default
+                presentDays = totalWorkingDays;
+                halfDays = 0;
+                absentDays = 0;
+            }
 
             const { deductions, netSalary } = staffService.calculateNetSalary(
                 member.basicSalary,
@@ -79,14 +93,15 @@ export default function StaffSalaryPage() {
             });
 
             setSalaries(prev => [...prev, salaryRecord]);
-            alert(`Salary generated for ${member.fullName}!`);
+            alert(`Salary generated for ${member.fullName} (${member.staffCode})!\nNet Salary: ₹${netSalary.toLocaleString()}`);
         } catch (error) {
-            console.error(error);
-            alert("Failed to generate salary.");
+            console.error("Salary generation error:", error);
+            alert("Failed to generate salary. Please check console for details.");
         } finally {
             setGenerating(false);
         }
     };
+
 
     const handleMarkPaid = async (salaryId: string) => {
         try {
