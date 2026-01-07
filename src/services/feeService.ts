@@ -68,14 +68,19 @@ export const feeService = {
         try {
             const q = query(
                 collection(db, COLLECTION_NAME),
-                where("studentId", "==", studentId),
-                orderBy("createdAt", "desc")
+                where("studentId", "==", studentId)
             );
             const querySnapshot = await getDocs(q);
-            return querySnapshot.docs.map((doc) => ({
+            const payments = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             })) as Payment[];
+            // Sort client-side
+            return payments.sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+                return dateB - dateA;
+            });
         } catch (error) {
             console.error("Error getting student payments:", error);
             throw error;
