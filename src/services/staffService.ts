@@ -164,7 +164,14 @@ export const staffService = {
         try {
             const q = query(collection(db, ATTENDANCE_COLLECTION), where("date", "==", date));
             const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffAttendance[];
+            const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffAttendance[];
+
+            // Sort by createdAt ascending to ensure last write wins in UI map
+            return list.sort((a, b) => {
+                const ta = a.createdAt?.seconds || 0;
+                const tb = b.createdAt?.seconds || 0;
+                return ta - tb;
+            });
         } catch (error) {
             console.error("Error fetching attendance for date:", error);
             throw error;
