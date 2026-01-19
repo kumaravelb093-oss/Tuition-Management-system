@@ -165,15 +165,22 @@ export default function EditStudentPage({ params }: { params: Promise<{ id: stri
                         <label className="block text-[14px] font-medium text-[#202124] mb-2">
                             Class / Grade *
                         </label>
-                        <input
-                            type="text"
+                        <select
                             name="grade"
                             required
-                            placeholder="e.g. 10th Standard"
-                            className="w-full px-4 py-2.5 text-[#202124] bg-white border border-[#DADCE0] rounded-md focus:outline-none focus:border-[#4285F4] focus:ring-1 focus:ring-[#4285F4] transition-shadow placeholder-[#9AA0A6]"
+                            className="w-full px-4 py-2.5 text-[#202124] bg-white border border-[#DADCE0] rounded-md focus:outline-none focus:border-[#4285F4] focus:ring-1 focus:ring-[#4285F4] transition-shadow"
                             value={formData.grade}
                             onChange={handleChange}
-                        />
+                        >
+                            <option value="">Select Class</option>
+                            <option value="6th Standard">6th Standard</option>
+                            <option value="7th Standard">7th Standard</option>
+                            <option value="8th Standard">8th Standard</option>
+                            <option value="9th Standard">9th Standard</option>
+                            <option value="10th Standard">10th Standard</option>
+                            <option value="11th Standard">11th Standard</option>
+                            <option value="12th Standard">12th Standard</option>
+                        </select>
                     </div>
                 </div>
 

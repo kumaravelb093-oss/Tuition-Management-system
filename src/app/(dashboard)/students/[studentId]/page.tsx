@@ -356,10 +356,10 @@ export default function StudentProfilePage({ params }: { params: Promise<{ stude
                                         </div>
                                         <div className="h-[250px] w-full">
                                             <ResponsiveContainer width="100%" height="100%">
-                                                <BarChart data={analysisData} layout="vertical" margin={{ left: -20, right: 20 }}>
+                                                <BarChart data={analysisData} layout="vertical" margin={{ left: 100, right: 20 }}>
                                                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#F1F3F4" />
                                                     <XAxis type="number" domain={[0, 100]} hide />
-                                                    <YAxis dataKey="subject" type="category" axisLine={false} tickLine={false} tick={{ fill: '#202124', fontSize: 11, fontWeight: 500 }} />
+                                                    <YAxis dataKey="subject" type="category" axisLine={false} tickLine={false} tick={{ fill: '#202124', fontSize: 11, fontWeight: 500 }} width={90} />
                                                     <Tooltip
                                                         cursor={{ fill: '#F8F9FA' }}
                                                         contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
