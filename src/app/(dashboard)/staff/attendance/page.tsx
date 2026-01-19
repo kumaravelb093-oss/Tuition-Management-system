@@ -11,7 +11,7 @@ export default function StaffAttendancePage() {
     const [viewMode, setViewMode] = useState<"daily" | "monthly">("daily");
 
     // Daily View State
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+    const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString('en-CA'));
 
     // Monthly View State
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -57,10 +57,7 @@ export default function StaffAttendancePage() {
             const map: Record<string, AttendanceStatus> = {};
             data.forEach(a => map[a.staffId] = a.status);
 
-            // Default to Present if not found
-            staff.forEach(s => {
-                if (!map[s.id!]) map[s.id!] = "Present";
-            });
+            // Removed defaulting to "Present" -> UI will show nothing selected if no record exists.
             setAttendanceMap(map);
         } catch (error) {
             console.error(error);
@@ -83,13 +80,23 @@ export default function StaffAttendancePage() {
     const handleSave = async () => {
         setSaving(true);
         try {
-            const entries = staff.map(s => ({
-                staffId: s.id!,
-                staffName: s.fullName,
-                date: selectedDate,
-                status: attendanceMap[s.id!] || "Present"
-            }));
-            await staffService.markAttendance(entries);
+            // Only save entries that have a status selected
+            const entries = staff
+                .filter(s => attendanceMap[s.id!]) // Filter out undefined/unmarked
+                .map(s => ({
+                    staffId: s.id!,
+                    staffName: s.fullName,
+                    date: selectedDate,
+                    status: attendanceMap[s.id!]
+                }));
+
+            if (entries.length === 0) {
+                alert("No attendance marked to save.");
+                setSaving(false);
+                return;
+            }
+
+            await staffService.markAttendance(entries as any);
             alert("Attendance saved successfully!");
         } catch (error) {
             console.error(error);

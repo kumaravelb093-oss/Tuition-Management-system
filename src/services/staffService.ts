@@ -228,14 +228,34 @@ export const staffService = {
 
     getPresentTodayCount: async (): Promise<number> => {
         try {
-            const today = new Date().toISOString().split('T')[0];
+            // Use local date to match "Today" in the office context
+            const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+
             const q = query(
                 collection(db, ATTENDANCE_COLLECTION),
-                where("date", "==", today),
-                where("status", "==", "Present")
+                where("date", "==", today)
             );
             const snapshot = await getDocs(q);
-            return snapshot.size;
+
+            const entries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as StaffAttendance[];
+
+            // Determine latest status for each staff member
+            // This ensures "Single Source of Truth" matches the "View Attendance" page logic
+            const latestStatusMap: Record<string, string> = {};
+
+            // Sort by createdAt ascending to ensure we process in chronological order
+            entries.sort((a, b) => {
+                const ta = a.createdAt?.seconds || 0;
+                const tb = b.createdAt?.seconds || 0;
+                return ta - tb;
+            });
+
+            entries.forEach(e => {
+                latestStatusMap[e.staffId] = e.status;
+            });
+
+            // Count only those who are finally "Present"
+            return Object.values(latestStatusMap).filter(s => s === "Present").length;
         } catch (error) {
             console.error("Error counting present today:", error);
             return 0;
